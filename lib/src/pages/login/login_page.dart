@@ -19,10 +19,10 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-  //  print('INIT STATE');
+    //print('INIT STATE');
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-    //  print('SCHEDULER BINDING');
+     // print('SCHEDULER BINDING');
       _con.init(context);
     });
 
