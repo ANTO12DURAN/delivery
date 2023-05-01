@@ -16,18 +16,18 @@ class RegisterController{
 
     UserProvider userProvider = UserProvider();
 
-    Future? init(BuildContext context){
+    Future? init(BuildContext? context){
       this.context = context;
-      userProvider.init(context);
+      userProvider.init(context!);
     }
 
     void registro() async {
-      String correo = correoController.text.trim();
-      String nombre = nombreController.text;
-      String apellido = apellidoController.text;
-      String telefono = telefonoController.text.trim();
-      String contrasena = contrasenaController.text.trim();
-      String confirmaContrasena = confirmaContrasenaController.text.trim();
+      String? correo = correoController.text.trim();
+      String? nombre = nombreController.text;
+      String? apellido = apellidoController.text;
+      String? telefono = telefonoController.text.trim();
+      String? contrasena = contrasenaController.text.trim();
+      String? confirmaContrasena = confirmaContrasenaController.text.trim();
 
       if(correo.isEmpty || nombre.isEmpty || apellido.isEmpty || telefono.isEmpty || contrasena.isEmpty || confirmaContrasena.isEmpty){
 
@@ -45,20 +45,25 @@ class RegisterController{
         return;
       }
 
-      User user = User(
+      User? user = User(
           email: correo,
           name: nombre,
           lastname: apellido,
           phone: telefono,
           password: contrasena
       );
-
-
       ResponseApi? responseApi = await userProvider.create(user);
+      MySnackbar.show(context, responseApi!.message);
 
-      MySnackbar.show(context!, responseApi!.message);
 
-      print('RESPUESTA: ${responseApi?.toJson()}');
+
+      if(responseApi!.success!){
+        Future.delayed(Duration(seconds: 3), (){
+            Navigator.pushReplacementNamed(context!, 'login');
+        });
+      }
+
+      print('RESPUESTA: ${responseApi!.toJson()}');
       print(correo);
       print(nombre);
       print(apellido);
@@ -66,6 +71,7 @@ class RegisterController{
       print(contrasena);
       print(confirmaContrasena);
     }
+
 
     void back(){
       Navigator.pop(context!);

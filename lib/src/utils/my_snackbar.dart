@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MySnackbar {
-  static void show(BuildContext context, String? text){
+  static void show(BuildContext? context, String? text){
     if (context == null) return;
 
     FocusScope.of(context).requestFocus(new FocusNode());

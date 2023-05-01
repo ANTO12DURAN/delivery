@@ -16,7 +16,7 @@ class LoginController{
 
   Future? init(BuildContext context) async{
     this.context = context;
-    await userProvider.init(context);
+    await userProvider.init(context!);
 
     User user = User.fromJson(await _sharedPref.read('user') ?? {});
     
@@ -49,7 +49,7 @@ class LoginController{
         _sharedPref.save('user', user.toJson());
         Navigator.pushNamedAndRemoveUntil(context!, 'client/products/list', (route) => false);
     } else{
-      MySnackbar.show(context!, responseApi.message);
+      MySnackbar.show(context!, responseApi!.message!);
     }
    // print('correo: $correo');
    // print('contraseña: $contrasena');
