@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class UserProvider{
+class UsersProvider{
   String _url = Environment.API_DELIVERY;
   String _api = '/api/users';
 
@@ -37,6 +37,8 @@ class UserProvider{
         }
 
   }
+
+
   Future<ResponseApi?> login(String correo, String contrasena) async{
     try{
       Uri url = Uri.http(_url, '$_api/login');

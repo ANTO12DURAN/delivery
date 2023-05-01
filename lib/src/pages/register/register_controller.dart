@@ -14,11 +14,11 @@ class RegisterController{
     TextEditingController contrasenaController = TextEditingController();
     TextEditingController confirmaContrasenaController = TextEditingController();
 
-    UserProvider userProvider = UserProvider();
+    UsersProvider usersProvider = UsersProvider();
 
-    Future? init(BuildContext? context){
+    Future? init(BuildContext context){
       this.context = context;
-      userProvider.init(context!);
+      usersProvider.init(context!);
     }
 
     void registro() async {
@@ -52,7 +52,7 @@ class RegisterController{
           phone: telefono,
           password: contrasena
       );
-      ResponseApi? responseApi = await userProvider.create(user);
+      ResponseApi? responseApi = await usersProvider.create(user);
       MySnackbar.show(context, responseApi!.message);
 
 
