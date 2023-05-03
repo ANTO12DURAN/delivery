@@ -17,12 +17,15 @@ class LoginController{
   Future? init(BuildContext context) async{
     this.context = context;
     await usersProvider.init(context);
-    User user = User.fromJson(await _sharedPref!.read('user')!);
+    User user = User.fromJson(await _sharedPref!.read('user') ?? {});
     print('Usuario: ${user.toJson()}');
 
     if(user?.sessionToken != null){
-        Navigator.pushNamedAndRemoveUntil(
-            context, 'client/products/list', (route) => false);
+      if(user.roles!.length > 1){
+        Navigator.pushNamedAndRemoveUntil(context!, 'roles', (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context!, user.roles![0].route!, (route) => false);
+      }
     }
   }
 
@@ -35,7 +38,7 @@ class LoginController{
     String? correo = correoController.text.trim();
     String? contrasena = contrasenaController.text.trim();
     ResponseApi? responseApi = await usersProvider.login(correo, contrasena);
-    MySnackbar.show(context!, responseApi!.message);
+   // MySnackbar.show(context!, responseApi!.message);
 
 
     print('Respuesta object: ${responseApi}');
@@ -43,8 +46,15 @@ class LoginController{
 
     if (responseApi!.success!) {
         User user = User.fromJson(responseApi.data);
-        _sharedPref?.save('user', user.toJson());
-        Navigator.pushNamedAndRemoveUntil(context!, 'client/products/list', (route) => false);
+        _sharedPref.save('user', user.toJson());
+        
+    print('USUARIO LOGEADO: ${user.toJson()}');
+
+        if(user.roles!.length > 1){
+          Navigator.pushNamedAndRemoveUntil(context!, 'roles', (route) => false);
+        } else {
+          Navigator.pushNamedAndRemoveUntil(context!, user.roles![0].route!, (route) => false);
+            }
     } else{
       MySnackbar.show(context!, responseApi!.message);
     }

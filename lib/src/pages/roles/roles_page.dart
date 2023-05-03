@@ -1,0 +1,76 @@
+import 'package:delivery/src/models/rol.dart';
+import 'package:delivery/src/pages/roles/roles_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+
+
+class RolesPage extends StatefulWidget {
+  const RolesPage({Key? key}) : super(key: key);
+
+  @override
+  State<RolesPage> createState() => _RolesPageState();
+}
+
+class _RolesPageState extends State<RolesPage> {
+
+  RolesController _con = new RolesController();
+
+  @override
+  void initState(){
+    super.initState();
+    SchedulerBinding.instance.addPersistentFrameCallback((timeStamp) {
+      _con.init(context, refresh);
+    });
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Selecciona un Rol'),
+      ),
+      body: Container(
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.14),
+        child: ListView(
+          children: _con.user != null ? _con.user!.roles!.map((Rol rol) {
+            return _cardRol(rol);
+          }).toList() : []
+        ),
+      ),
+    );
+  }
+  Widget _cardRol(Rol rol){
+
+      setState(() {}); // ctrl + S
+      return GestureDetector(
+        onTap: (){
+          _con.goToPage(rol.route!);
+        },
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+              child: Image.asset('${rol.image}',
+                      width: 200,
+                       height: 200,
+                     ),
+            ),
+            SizedBox(height: 10,),
+            Text(
+             rol.name ?? '',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black
+              ),
+            ),
+            SizedBox(height: 10,),
+          ],
+        ),
+      );
+  }
+  void refresh(){
+    setState(() {});
+  }
+
+}
